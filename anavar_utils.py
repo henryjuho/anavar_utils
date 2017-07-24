@@ -64,39 +64,38 @@ class Snp1ControlFile(object):
 
         model_ctrls = ('[model_commands]\n'
                        'model: SNP_1\n'
-                       'n: {}\n'
-                       'm: {}\n'
-                       'folded: {}\n'
-                       'sfs: {}\n'.format(n, sfs_m[0][1],
-                                          str(snp_fold).lower(),
-                                          ', '.join([str(x) for x in sfs_m[0][0]])))
+                       'n: {n}\n'
+                       'm: {m}\n'
+                       'folded: {fold}\n'
+                       'sfs: {sfs}\n'.format(n=n, m=sfs_m[0][1],
+                                             fold=str(snp_fold).lower(),
+                                             sfs=', '.join([str(x) for x in sfs_m[0][0]])))
 
         self.model_opts = model_ctrls
 
         if dfe == 'discrete':
             dfe_param = ('dfe: discrete\n'
-                         'c: {}\n'
-                         'theta_range: {}, {}\n'
-                         'gamma_range: {}, {}\n'
-                         'e_range: {}, {}\n')
+                         'c: {c}\n'
+                         'theta_range: {t1}, {t2}\n'
+                         'gamma_range: {g1}, {g2}\n'
+                         'e_range: {e1}, {e2}\n')
 
-            dfe_param = dfe_param.format(c,
-                                         theta_r[0], theta_r[1],
-                                         gamma_r[0], gamma_r[1],
-                                         error_r[0], error_r[1])
+            dfe_param = dfe_param.format(c=c,
+                                         t1=theta_r[0], t2=theta_r[1],
+                                         g1=gamma_r[0], g2=gamma_r[1],
+                                         e1=error_r[0], e2=error_r[1])
         else:
             dfe_param = ('dfe: continuous\n'
                          'distribution: reflected_gamma\n'
-                         'theta_range: {}, {}\n'
-                         'shape_range: {}, {}\n'
-                         'scale_range: {}, {}\n'
-                         'e_range: {}, {}\n')
+                         'theta_range: {t1}, {t2}\n'
+                         'shape_range: {sh1}, {sh2}\n'
+                         'scale_range: {sc1}, {sc2}\n'
+                         'e_range: {e1}, {e2}\n')
 
-            dfe_param = dfe_param.format(c,
-                                         theta_r[0], theta_r[1],
-                                         shape_r[0], shape_r[1],
-                                         scale_r[0], scale_r[1],
-                                         error_r[0], error_r[1])
+            dfe_param = dfe_param.format(t1=theta_r[0], t2=theta_r[1],
+                                         sh1=shape_r[0], sh2=shape_r[1],
+                                         sc1=scale_r[0], sc2=scale_r[1],
+                                         e1=error_r[0], e2=error_r[1])
         self.dfe_opts = dfe_param
 
     def set_constraint(self):
@@ -147,53 +146,46 @@ class Indel1ControlFile(Snp1ControlFile):
 
         model_ctrls = ('[model_commands]\n'
                        'model: INDEL_1\n'
-                       'n: {}\n'
-                       'm: {}\n'
-                       'ins_sfs: {}\n'
-                       'del_sfs: {}\n').format(n, sfs_m[0][1],
-                                               ', '.join([str(x) for x in sfs_m[0][0]]),
-                                               ', '.join([str(x) for x in sfs_m[1][0]]))
+                       'n: {n}\n'
+                       'm: {m1}\n'
+                       'ins_sfs: {sfs1}\n'
+                       'del_sfs: {sfs2}\n').format(n=n, m1=sfs_m[0][1],
+                                                   sfs1=', '.join([str(x) for x in sfs_m[0][0]]),
+                                                   sfs2=', '.join([str(x) for x in sfs_m[1][0]]))
 
         self.model_opts = model_ctrls
 
         if dfe == 'discrete':
             dfe_param = ('dfe: discrete\n'
-                         'c: {}\n'
-                         'ins_theta_range: {}, {}\n'
-                         'ins_gamma_range: {}, {}\n'
-                         'ins_e_range: {}, {}\n'
-                         'del_theta_range: {}, {}\n'
-                         'del_gamma_range: {}, {}\n'
-                         'del_e_range: {}, {}\n')
+                         'c: {c}\n'
+                         'ins_theta_range: {t1}, {t2}\n'
+                         'ins_gamma_range: {g1}, {g2}\n'
+                         'ins_e_range: {e1}, {e2}\n'
+                         'del_theta_range: {t1}, {t2}\n'
+                         'del_gamma_range: {g1}, {g2}\n'
+                         'del_e_range: {e1}, {e2}\n')
 
-            dfe_param = dfe_param.format(c,
-                                         theta_r[0], theta_r[1],
-                                         gamma_r[0], gamma_r[1],
-                                         error_r[0], error_r[1],
-                                         theta_r[0], theta_r[1],
-                                         gamma_r[0], gamma_r[1],
-                                         error_r[0], error_r[1])
+            dfe_param = dfe_param.format(c=c,
+                                         t1=theta_r[0], t2=theta_r[1],
+                                         g1=gamma_r[0], g2=gamma_r[1],
+                                         e1=error_r[0], e2=error_r[1])
 
         else:
             dfe_param = ('dfe: continuous\n'
                          'distribution: reflected_gamma\n'
-                         'ins_theta_range: {}, {}\n'
-                         'ins_shape_range: {}, {}\n'
-                         'ins_scale_range: {}, {}\n'
-                         'ins_e_range: {}, {}\n'
-                         'del_theta_range: {}, {}\n'
-                         'del_shape_range: {}, {}\n'
-                         'del_scale_range: {}, {}\n'
-                         'del_e_range: {}, {}\n')
+                         'ins_theta_range: {t1}, {t2}\n'
+                         'ins_shape_range: {sh1}, {sh2}\n'
+                         'ins_scale_range: {sc1}, {sc2}\n'
+                         'ins_e_range: {e1}, {e2}\n'
+                         'del_theta_range: {t1}, {t2}\n'
+                         'del_shape_range: {sh1}, {sh2}\n'
+                         'del_scale_range: {sc1}, {sc2}\n'
+                         'del_e_range: {e1}, {e2}\n')
 
-            dfe_param = dfe_param.format(theta_r[0], theta_r[1],
-                                         shape_r[0], shape_r[1],
-                                         scale_r[0], scale_r[1],
-                                         error_r[0], error_r[1],
-                                         theta_r[0], theta_r[1],
-                                         shape_r[0], shape_r[1],
-                                         scale_r[0], scale_r[1],
-                                         error_r[0], error_r[1])
+            dfe_param = dfe_param.format(t1=theta_r[0], t2=theta_r[1],
+                                         sh1=shape_r[0], sh2=shape_r[1],
+                                         sc1=scale_r[0], sc2=scale_r[1],
+                                         e1=error_r[0], e2=error_r[1])
 
         self.dfe_opts = dfe_param
 
