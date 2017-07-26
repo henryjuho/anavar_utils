@@ -10,6 +10,25 @@ class Snp1ControlFile(object):
         self.model_opts = ''
         self.dfe_opts = ''
         self.constraint_opts = ''
+        self.sfs = ['SNP']
+
+    def _check_sfs_m_in(self, sfs_m):
+
+        """
+        checks that all required sfs are given in input
+        :param sfs_m: dict
+        :return: NA
+        """
+
+        sfs_keys = sfs_m.keys()
+
+        sfs_not_given = []
+        for key in self.sfs:
+            if key not in sfs_keys:
+                sfs_not_given.append(key)
+
+        if len(sfs_not_given) > 0:
+            raise KeyError('Missing the following SFS in input: {}'.format(','.join(sfs_not_given)))
 
     def set_alg_opts(self, alg='NLOPT_LD_LBFGS', search=500):
 
@@ -49,7 +68,7 @@ class Snp1ControlFile(object):
 
         """
         sets model and dfe commands in control file
-        :param sfs_m: list(tuple(list(float), int), ..)
+        :param sfs_m: dict{str: tuple(list(float), int), ..}
         :param n: int
         :param snp_fold: bool
         :param dfe: str
@@ -63,14 +82,16 @@ class Snp1ControlFile(object):
         :return: NA
         """
 
+        self._check_sfs_m_in(sfs_m)
+
         model_ctrls = ('[model_commands]\n'
                        'model: SNP_1\n'
                        'n: {n}\n'
                        'm: {m}\n'
                        'folded: {fold}\n'
-                       'sfs: {sfs}\n'.format(n=n, m=sfs_m[0][1],
+                       'sfs: {sfs}\n'.format(n=n, m=sfs_m['SNP'][1],
                                              fold=str(snp_fold).lower(),
-                                             sfs=', '.join([str(x) for x in sfs_m[0][0]])))
+                                             sfs=', '.join([str(x) for x in sfs_m['SNP'][0]])))
 
         self.model_opts = model_ctrls
 
@@ -125,6 +146,8 @@ class Indel1ControlFile(Snp1ControlFile):
     def __init__(self):
         Snp1ControlFile.__init__(self)
 
+        self.sfs = ['INS', 'DEL']
+
     def set_data(self, sfs_m, n, snp_fold=False,
                  dfe='discrete', c=1,
                  theta_r=(1e-6, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5),
@@ -132,7 +155,7 @@ class Indel1ControlFile(Snp1ControlFile):
 
         """
         sets model and dfe commands in control file
-        :param sfs_m: list(tuple(list(float), int), ..)
+        :param sfs_m: dict{str: tuple(list(float), int), ..}
         :param n: int
         :param snp_fold: bool
         :param dfe: str
@@ -146,14 +169,16 @@ class Indel1ControlFile(Snp1ControlFile):
         :return: NA
         """
 
+        self._check_sfs_m_in(sfs_m)
+
         model_ctrls = ('[model_commands]\n'
                        'model: INDEL_1\n'
                        'n: {n}\n'
                        'm: {m1}\n'
                        'ins_sfs: {sfs1}\n'
-                       'del_sfs: {sfs2}\n').format(n=n, m1=sfs_m[0][1],
-                                                   sfs1=', '.join([str(x) for x in sfs_m[0][0]]),
-                                                   sfs2=', '.join([str(x) for x in sfs_m[1][0]]))
+                       'del_sfs: {sfs2}\n').format(n=n, m1=sfs_m['INS'][1],
+                                                   sfs1=', '.join([str(x) for x in sfs_m['INS'][0]]),
+                                                   sfs2=', '.join([str(x) for x in sfs_m['DEL'][0]]))
 
         self.model_opts = model_ctrls
 
@@ -193,9 +218,11 @@ class Indel1ControlFile(Snp1ControlFile):
 
 
 class GbgcControlFile(Snp1ControlFile):
-    def __init__(self):
 
+    def __init__(self):
         Snp1ControlFile.__init__(self)
+
+        self.sfs = ['neutral_SNPs', 'ws_SNPs', 'sw_SNPs']
 
     def set_data(self, sfs_m, n, snp_fold=False,
                  dfe='discrete', c=1,
@@ -204,7 +231,7 @@ class GbgcControlFile(Snp1ControlFile):
 
         """
         sets model and dfe commands in control file
-        :param sfs_m: list(tuple(list(float), int), ..)
+        :param sfs_m: dict{str: tuple(list(float), int), ..}
         :param n: int
         :param snp_fold: bool
         :param dfe: str
@@ -217,6 +244,8 @@ class GbgcControlFile(Snp1ControlFile):
         :param r_r: tuple(float, float)
         :return: NA
         """
+
+        self._check_sfs_m_in(sfs_m)
 
         model_ctrls = ('[model_commands]\n'
                        'model: gBGC_GLEMIN_EXTENDED_M1*\n'
@@ -246,9 +275,12 @@ class GbgcControlFile(Snp1ControlFile):
 
         model_ctrls = model_ctrls.format(n=n,
                                          r1=r_r[0], r2=r_r[1],
-                                         m1=sfs_m[0][1], sfs1=', '.join([str(x) for x in sfs_m[0][0]]),
-                                         m2=sfs_m[1][1], sfs2=', '.join([str(x) for x in sfs_m[1][0]]),
-                                         m3=sfs_m[2][1], sfs3=', '.join([str(x) for x in sfs_m[2][0]]),
+                                         m1=sfs_m['neutral_SNPs'][1],
+                                         sfs1=', '.join([str(x) for x in sfs_m['neutral_SNPs'][0]]),
+                                         m2=sfs_m['ws_SNPs'][1],
+                                         sfs2=', '.join([str(x) for x in sfs_m['ws_SNPs'][0]]),
+                                         m3=sfs_m['sw_SNPs'][1],
+                                         sfs3=', '.join([str(x) for x in sfs_m['sw_SNPs'][0]]),
                                          t1=theta_r[0], t2=theta_r[1],
                                          g1=gamma_r[0], g2=gamma_r[1],
                                          e1=error_r[0], e2=error_r[1])
@@ -258,9 +290,11 @@ class GbgcControlFile(Snp1ControlFile):
 
 
 class IndelNeuSelControlFile(Snp1ControlFile):
-    def __init__(self):
 
+    def __init__(self):
         Snp1ControlFile.__init__(self)
+
+        self.sfs = ['neutral_INS', 'neutral_DEL', 'selected_INS', 'selected_DEL']
 
     def set_data(self, sfs_m, n, snp_fold=False,
                  dfe='discrete', c=1,
@@ -269,7 +303,7 @@ class IndelNeuSelControlFile(Snp1ControlFile):
 
         """
         sets model and dfe commands in control file
-        :param sfs_m: list(tuple(list(float), int), ..)
+        :param sfs_m: dict{str: tuple(list(float), int), ..}
         :param n: int
         :param snp_fold: bool
         :param dfe: str
@@ -282,6 +316,8 @@ class IndelNeuSelControlFile(Snp1ControlFile):
         :param r_r: tuple(float, float)
         :return: NA
         """
+
+        self._check_sfs_m_in(sfs_m)
 
         model_ctrls = ('[model_commands]\n'
                        'model: neutralINDEL_vs_selectedINDEL\n'
@@ -300,12 +336,12 @@ class IndelNeuSelControlFile(Snp1ControlFile):
 
         model_ctrls = model_ctrls.format(n=n,
                                          r1=r_r[0], r2=r_r[1],
-                                         m1=sfs_m[0][1],
-                                         sfs1=', '.join([str(x) for x in sfs_m[0][0]]),
-                                         sfs2=', '.join([str(x) for x in sfs_m[1][0]]),
-                                         m3=sfs_m[2][1],
-                                         sfs3=', '.join([str(x) for x in sfs_m[2][0]]),
-                                         sfs4=', '.join([str(x) for x in sfs_m[3][0]]),
+                                         m1=sfs_m['neutral_INS'][1],
+                                         sfs1=', '.join([str(x) for x in sfs_m['neutral_INS'][0]]),
+                                         sfs2=', '.join([str(x) for x in sfs_m['neutral_DEL'][0]]),
+                                         m3=sfs_m['selected_INS'][1],
+                                         sfs3=', '.join([str(x) for x in sfs_m['selected_INS'][0]]),
+                                         sfs4=', '.join([str(x) for x in sfs_m['selected_DEL'][0]]),
                                          t1=theta_r[0], t2=theta_r[1],
                                          e1=error_r[0], e2=error_r[1])
 
