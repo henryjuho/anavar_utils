@@ -380,3 +380,101 @@ class IndelNeuSelControlFile(Snp1ControlFile):
                                          e1=error_r[0], e2=error_r[1])
 
         self.dfe_opts = dfe_param
+
+
+class ResultsFile(object):
+
+    def __init__(self, anavar_results_file):
+
+        """
+        Creates an anavar results file object
+        :param anavar_results_file: file
+        """
+
+        contents = anavar_results_file.readlines()
+        head = contents[0:5]
+        self.control_location = head[0].split()[2]
+        self.param = tuple(head[2].split()[4:])
+        self.columns = tuple(head[4].split())
+
+        self.data = contents[5:]
+
+    def free_parameters(self):
+
+        """
+        returns all free parameters in results file
+        :return: tuple
+        """
+
+        return self.param
+
+    def control_file(self):
+
+        """
+        returns control file path
+        :return: str
+        """
+
+        return self.control_location
+
+    def header(self):
+
+        """
+        returns the column headers line from the file
+        :return: tuple
+        """
+
+        return self.columns
+
+    def _results_to_dict(self, line):
+
+        """
+        converts anavar results line to dict
+        :param line: str
+        :return: dict
+        """
+
+        line = line.split()
+        line_dict = {}
+
+        for i in range(0, len(self.columns)):
+
+            col_val = line[i]
+            if '.' in col_val or 'e' in col_val:
+                col_val = float(col_val)
+            else:
+                col_val = int(col_val)
+
+            line_dict[self.columns[i]] = col_val
+
+        return line_dict
+
+    def estimates(self):
+
+        """
+        returns generator of all estimates in dictionary form
+        :return: generator
+        """
+
+        for line in self.data:
+            line = self._results_to_dict(line)
+            yield line
+
+    def ml_estimate(self):
+
+        """
+        returns the maximum likelihood estimate
+        :return: dict
+        """
+
+        ml = self.data[0]
+        return self._results_to_dict(ml)
+
+    def num_runs(self):
+
+        """
+        gives the number of runs listed in the results file
+        :return: int
+        """
+
+        return len(self.data)
