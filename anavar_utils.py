@@ -449,26 +449,35 @@ class ResultsFile(object):
 
         return line_dict
 
-    def estimates(self):
+    def estimates(self, as_string=False):
 
         """
         returns generator of all estimates in dictionary form
+        :param as_string: bool
         :return: generator
         """
 
         for line in self.data:
-            line = self._results_to_dict(line)
+            if as_string:
+                line = line.rstrip()
+            else:
+                line = self._results_to_dict(line)
             yield line
 
-    def ml_estimate(self):
+    def ml_estimate(self, as_string=False):
 
         """
         returns the maximum likelihood estimate
+        :param as_string: bool
         :return: dict
         """
 
         ml = self.data[0]
-        return self._results_to_dict(ml)
+
+        if as_string:
+            return ml.rstrip()
+        else:
+            return self._results_to_dict(ml)
 
     def num_runs(self):
 
