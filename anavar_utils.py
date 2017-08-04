@@ -11,6 +11,7 @@ class Snp1ControlFile(object):
         self.dfe_opts = ''
         self.constraint_opts = ''
         self.sfs = ['SNP']
+        self.dfe_optional_opts = ''
 
     def _check_sfs_m_in(self, sfs_m):
 
@@ -118,12 +119,27 @@ class Snp1ControlFile(object):
                                          sh1=shape_r[0], sh2=shape_r[1],
                                          sc1=scale_r[0], sc2=scale_r[1],
                                          e1=error_r[0], e2=error_r[1])
+
+            if self.dfe_optional_opts == '':
+                self.set_dfe_optional_opts()
+
         self.dfe_opts = dfe_param
 
     def set_constraint(self):
         constraint = 'constraint: none\n'
 
         self.constraint_opts = constraint
+
+    def set_dfe_optional_opts(self, optional=False, fraction=0.005, degree=50, delta=1e-5):
+
+        opt_string = 'optional: {}\n'.format(str(optional).lower())
+        if optional is True:
+            opt_string += ('fraction: {}\n'
+                           'delta: {}\n'
+                           'degree: {}\n'
+                           '').format(fraction, delta, degree)
+
+        self.dfe_optional_opts = opt_string
 
     def construct(self):
 
@@ -137,7 +153,9 @@ class Snp1ControlFile(object):
         if self.constraint_opts == '':
             self.set_constraint()
 
-        control_contents = self.alg_opts + self.model_opts + self.dfe_opts + self.constraint_opts
+        control_contents = (self.alg_opts + self.model_opts +
+                            self.dfe_opts + self.constraint_opts +
+                            self.dfe_optional_opts)
         return control_contents
 
 
@@ -213,6 +231,9 @@ class Indel1ControlFile(Snp1ControlFile):
                                          sh1=shape_r[0], sh2=shape_r[1],
                                          sc1=scale_r[0], sc2=scale_r[1],
                                          e1=error_r[0], e2=error_r[1])
+
+            if self.dfe_optional_opts == '':
+                self.set_dfe_optional_opts()
 
         self.dfe_opts = dfe_param
 
@@ -378,6 +399,9 @@ class IndelNeuSelControlFile(Snp1ControlFile):
                                          sh1=shape_r[0], sh2=shape_r[1],
                                          sc1=scale_r[0], sc2=scale_r[1],
                                          e1=error_r[0], e2=error_r[1])
+
+            if self.dfe_optional_opts == '':
+                self.set_dfe_optional_opts()
 
         self.dfe_opts = dfe_param
 
