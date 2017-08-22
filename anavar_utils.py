@@ -12,6 +12,7 @@ class Snp1ControlFile(object):
         self.constraint_opts = ''
         self.sfs = ['SNP']
         self.dfe_optional_opts = ''
+        self.constraints = ['none', 'no_pol_error', 'equal_pol_error', 'equal_mutation_rate']
 
     def _check_sfs_m_in(self, sfs_m):
 
@@ -125,10 +126,20 @@ class Snp1ControlFile(object):
 
         self.dfe_opts = dfe_param
 
-    def set_constraint(self):
-        constraint = 'constraint: none\n'
+    def set_constraint(self, constraint):
 
-        self.constraint_opts = constraint
+        """
+        sets constraint
+        :param constraint: str
+        :return: sets str
+        """
+
+        if constraint not in self.constraints:
+            raise ValueError('Not a recognised constraint!')
+
+        constraint_str = 'constraint: {}\n'.format(constraint)
+
+        self.constraint_opts = constraint_str
 
     def set_dfe_optional_opts(self, optional=False, fraction=0.005, degree=50, delta=1e-5):
 
@@ -151,7 +162,7 @@ class Snp1ControlFile(object):
         if self.alg_opts == '':
             self.set_alg_opts()
         if self.constraint_opts == '':
-            self.set_constraint()
+            self.set_constraint('none')
 
         control_contents = (self.alg_opts + self.model_opts +
                             self.dfe_opts + self.constraint_opts +
@@ -165,6 +176,7 @@ class Indel1ControlFile(Snp1ControlFile):
         Snp1ControlFile.__init__(self)
 
         self.sfs = ['INS', 'DEL']
+        self.constraints = ['none', 'neutral']
 
     def set_data(self, sfs_m, n, snp_fold=False,
                  dfe='discrete', c=1,
@@ -244,6 +256,7 @@ class GbgcControlFile(Snp1ControlFile):
         Snp1ControlFile.__init__(self)
 
         self.sfs = ['neutral_SNPs', 'ws_SNPs', 'sw_SNPs']
+        self.constraints = ['none', 'M0', 'M1', 'M0*', 'M1*']
 
     def set_data(self, sfs_m, n, snp_fold=False,
                  dfe='discrete', c=1,
@@ -316,6 +329,7 @@ class IndelNeuSelControlFile(Snp1ControlFile):
         Snp1ControlFile.__init__(self)
 
         self.sfs = ['neutral_INS', 'neutral_DEL', 'selected_INS', 'selected_DEL']
+        self.constraints = ['none', 'equal_mutation_rate']
 
     def set_data(self, sfs_m, n, snp_fold=False,
                  dfe='discrete', c=1,
