@@ -25,3 +25,4 @@ Where the number of entries and the keys in the dictionary depend on the model:
 * INDEL_1 keys: 'INS', 'DEL'
 * gBGC_GLEMIN_EXTENDED_M1* keys: 'neutral_SNPs', 'ws_SNPs', 'sw_SNPs'
 * neutralINDEL_vs_selectedINDEL: 'neutral_INS', 'neutral_DEL', 'selected_INS', 'selected_DEL'
+* neutralSNP_vs_selectedSNP: 'neutral_SNP', 'selected_SNP'
