@@ -454,7 +454,7 @@ class SNPNeuSelControlFile(Snp1ControlFile):
         model_ctrls = ('[model_commands]\n'
                        'model: neutralSNP_vs_selectedSNP\n'
                        'n: {n}\n'
-                       'folded: {fold}'
+                       'folded: {fold}\n'
                        'r_range: {r1}, {r2}\n'
                        'neu_m: {m1}\n'
                        'neu_sfs: {sfs1}\n'
