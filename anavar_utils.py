@@ -282,7 +282,7 @@ class GbgcControlFile(Snp1ControlFile):
         self._check_sfs_m_in(sfs_m)
 
         model_ctrls = ('[model_commands]\n'
-                       'model: gBGC_GLEMIN_EXTENDED_M1*\n'
+                       'model: gBGC_EXTENDED_M1*\n'
                        'n: {n}\n'
                        'r_range: {r1}, {r2}\n'
                        '\n'
