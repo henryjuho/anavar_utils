@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import re
 
 class Snp1ControlFile(object):
 
@@ -549,7 +550,7 @@ class ResultsFile(object):
 
         return self.columns
 
-    def _results_to_dict(self, line):
+    def __results_to_dict(self, line):
 
         """
         converts anavar results line to dict
@@ -584,7 +585,7 @@ class ResultsFile(object):
             if as_string:
                 line = line.rstrip()
             else:
-                line = self._results_to_dict(line)
+                line = self.__results_to_dict(line)
             yield line
 
     def ml_estimate(self, as_string=False):
@@ -600,7 +601,75 @@ class ResultsFile(object):
         if as_string:
             return ml.rstrip()
         else:
-            return self._results_to_dict(ml)
+            return self.__results_to_dict(ml)
+
+    def bounds_hit(self, theta_r=(1e-6, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5),
+                   shape_r=(1e-3, 200), scale_r=(0.1, 1e3), r_r=(0.05, 5.0)):
+
+        """
+        lists parameters too close to estimate boundaries
+        :param theta_r: tuple
+        :param gamma_r: tuple
+        :param error_r: tuple
+        :param shape_r: tuple
+        :param scale_r: tuple
+        :param r_r: tuple
+        :return: list
+        """
+
+        params_hitting_limits = []
+        skip_params = ['run', 'imp', 'exit_code', 'lnL']
+
+        ml_dict = self.ml_estimate()
+        for param in ml_dict.keys():
+
+            if re.search(r'theta', param):
+                bounds = theta_r
+
+            elif re.search(r'gamma', param):
+                bounds = gamma_r
+
+            elif re.search(r'scale', param):
+                bounds = scale_r
+
+            elif re.search(r'shape', param):
+                bounds = shape_r
+
+            elif re.search(r'r_\d{1,2}', param):
+                bounds = r_r
+
+            elif param in skip_params:
+                continue
+
+            else:
+                bounds = error_r
+
+            b_hit = self.__boundary_hit(ml_dict[param], bounds[1], bounds[0], 1e-5)
+
+            if b_hit:
+                params_hitting_limits.append(param)
+
+        return params_hitting_limits
+
+    def __boundary_hit(self, mle, upr_b, lwr_b, min_dif):
+
+        """
+        decides if ml estimate is too close to boundary
+        :param mle: float
+        :param upr_b: float
+        :param lwr_b: float
+        :param min_dif: float
+        :return: bool
+        """
+
+        for b in [abs(upr_b), abs(lwr_b)]:
+
+            dif = (abs(mle) - b) / (0.5 * (abs(mle) + b))
+
+            if abs(dif) < abs(min_dif):
+                return True
+
+        return False
 
     def num_runs(self):
 
