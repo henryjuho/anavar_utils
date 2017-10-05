@@ -644,7 +644,13 @@ class ResultsFile(object):
             else:
                 bounds = error_r
 
-            b_hit = self.__boundary_hit(ml_dict[param], bounds[1], bounds[0], 1e-5)
+            try:
+                b_hit = self.__boundary_hit(ml_dict[param], bounds[1], bounds[0], 1e-5)
+
+            # catches error = 0
+            except ZeroDivisionError:
+                params_hitting_limits.append(param)
+                continue
 
             if b_hit:
                 params_hitting_limits.append(param)
