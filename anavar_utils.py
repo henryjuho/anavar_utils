@@ -33,12 +33,13 @@ class Snp1ControlFile(object):
         if len(sfs_not_given) > 0:
             raise KeyError('Missing the following SFS in input: {}'.format(','.join(sfs_not_given)))
 
-    def set_alg_opts(self, alg='NLOPT_LD_LBFGS', search=500):
+    def set_alg_opts(self, alg='NLOPT_LD_LBFGS', search=500, optional=True):
 
         """
         sets algorithm options in control file
         :param alg: str
         :param search: int
+        :param optional: bool
         :return: sets algorithm string
         """
 
@@ -53,17 +54,21 @@ class Snp1ControlFile(object):
                       'maxtime: 600\n'
                       'num_searches: {}\n'
                       'nnoimp: 1\n'
-                      'maximp: 3\n'
-                      'optional: true\n'
-                      'size: 10000\n'
-                      'key: 3\n'
-                      'epsabs: 1e-20\n'
-                      'epsrel: 1e-9\n'
-                      'rftol: 1e-9\n'
-                      '\n').format(alg, search)
+                      'maximp: 3\n').format(alg, search)
+
+        if optional:
+            alg_string += ('optional: true\n'
+                           'size: 10000\n'
+                           'key: 3\n'
+                           'epsabs: 1e-20\n'
+                           'epsrel: 1e-9\n'
+                           'rftol: 1e-9\n'
+                           '\n')
+        else:
+            alg_string += 'optional: false\n\n'
 
         self.alg_opts = alg_string
-
+        
     def set_data(self, sfs_m, n, snp_fold=False,
                  dfe='discrete', c=1,
                  theta_r=(1e-6, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5),
