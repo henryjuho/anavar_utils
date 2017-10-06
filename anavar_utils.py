@@ -603,6 +603,23 @@ class ResultsFile(object):
         else:
             return self.__results_to_dict(ml)
 
+    def converged(self):
+
+        """
+        assesses convergence for results file
+        :return: bool
+        """
+
+        top_lnls = [abs(x['lnL']) for x in self.estimates()][0:2]
+
+        dif = (top_lnls[0] - top_lnls[1]) / (0.5 * (top_lnls[0] + top_lnls[1]))
+
+        if abs(dif) < 1e-5:
+            return True
+
+        else:
+            return False
+
     def bounds_hit(self, theta_r=(1e-6, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5),
                    shape_r=(1e-3, 200), scale_r=(0.1, 1e3), r_r=(0.05, 5.0)):
 
