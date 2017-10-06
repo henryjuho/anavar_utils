@@ -696,7 +696,17 @@ class ResultsFile(object):
 
     def data_type(self):
 
-        pass
+        """
+        assings data as either indel or snp
+        :return: str
+        """
+
+        param_str = ','.join(self.free_parameters())
+
+        if 'ins' in param_str and 'del' in param_str:
+            return 'indel'
+        else:
+            return 'snp'
 
     def num_class(self):
 
