@@ -34,7 +34,7 @@ class Snp1ControlFile(object):
         if len(sfs_not_given) > 0:
             raise KeyError('Missing the following SFS in input: {}'.format(','.join(sfs_not_given)))
             
-  def set_alg_opts(self, alg='NLOPT_LD_LBFGS', maxeval=100000, maxtime=600, search=500, nnoimp=1, maximp=3,
+    def set_alg_opts(self, alg='NLOPT_LD_LBFGS', maxeval=100000, maxtime=600, search=500, nnoimp=1, maximp=3,
                      optional=False, size=10000, key=3, epsabs=1e-50, epsrel=1e-10, rftol=1e-10):
 
         """
@@ -44,9 +44,10 @@ class Snp1ControlFile(object):
         :param maxtime: int
         :param search: int
         :param nnoimp: int
+        :param maximp: int
         :param optional: bool
-        :param: size: int
-        :param: key: int
+        :param size: int
+        :param key: int
         :param epsabs: float
         :param epsrel: float
         :param rftol: float
@@ -78,7 +79,7 @@ class Snp1ControlFile(object):
             alg_string += 'optional: false\n\n'
 
         self.alg_opts = alg_string
-        
+
     def set_data(self, sfs_m, n, snp_fold=False,
                  dfe='discrete', c=1,
                  theta_r=(1e-6, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5),
