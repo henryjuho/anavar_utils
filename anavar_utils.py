@@ -697,7 +697,7 @@ class ResultsFile(object):
     def data_type(self):
 
         """
-        assings data as either indel or snp
+        assigns data as either indel or snp
         :return: str
         """
 
