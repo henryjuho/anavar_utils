@@ -2,6 +2,7 @@
 
 import re
 
+
 class Snp1ControlFile(object):
 
     def __init__(self):
@@ -725,6 +726,19 @@ class ResultsFile(object):
             return 1
         else:
             return len(thetas)
+
+    def dfe(self):
+
+        """
+        returns type of distribution
+        :return: str
+        """
+        param_str = ','.join(self.free_parameters())
+
+        if 'scale' in param_str and 'shape' in param_str:
+            return 'continuous'
+        else:
+            return 'discrete'
 
     def num_runs(self):
 
