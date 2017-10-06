@@ -34,7 +34,7 @@ class Snp1ControlFile(object):
             raise KeyError('Missing the following SFS in input: {}'.format(','.join(sfs_not_given)))
             
   def set_alg_opts(self, alg='NLOPT_LD_LBFGS', maxeval=100000, maxtime=600, search=500, nnoimp=1, maximp=3,
-                     optional=True, size=10000, key=3, epsabs=1e-50, epsrel=1e-10, rftol=1e-10):
+                     optional=False, size=10000, key=3, epsabs=1e-50, epsrel=1e-10, rftol=1e-10):
 
         """
         sets algorithm options in control file
