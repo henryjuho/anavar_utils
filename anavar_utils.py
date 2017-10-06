@@ -694,6 +694,28 @@ class ResultsFile(object):
 
         return False
 
+    def data_type(self):
+
+        pass
+
+    def num_class(self):
+
+        """
+        returns number of classes in results file
+        :return: int
+        """
+        params = self.free_parameters()
+
+        thetas = set([x.split('_')[-1] for x in params if 'theta' in x])
+
+        if 'theta' in thetas:
+            thetas.remove('theta')
+
+        if 1 >= len(thetas) >= 0:
+            return 1
+        else:
+            return len(thetas)
+
     def num_runs(self):
 
         """
