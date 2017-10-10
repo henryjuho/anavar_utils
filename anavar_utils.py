@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import re
+import os
 
 
 class Snp1ControlFile(object):
@@ -532,10 +534,10 @@ class ResultsFile(object):
         """
 
         contents = anavar_results_file.readlines()
-        head = contents[0:5]
-        self.control_location = head[0].split()[2]
-        self.param = tuple(head[2].split()[4:])
-        self.columns = tuple(head[4].split())
+        self.head = contents[0:5]
+        self.control_location = self.head[0].split()[2]
+        self.param = tuple(self.head[2].split()[4:])
+        self.columns = tuple(self.head[4].split())
 
         self.data = contents[5:]
 
@@ -763,3 +765,60 @@ class ResultsFile(object):
         """
 
         return len(self.data)
+
+
+class MultiResultsFile(ResultsFile):
+
+    def __init__(self, file_list):
+
+        """
+        takes a list of anavar results files and merges them into one,
+        then calls ResultsFile instance on merged file before deleting
+        merged file
+        :param file_list: list
+        """
+
+        merged_name = file_list[0] + '.merged.results.txt'
+
+        merge_results(file_list, merged_name)
+
+        ResultsFile.__init__(self, open(merged_name))
+
+        os.remove(merged_name)
+
+
+def merge_results(file_list, name):
+
+    """
+    takes list of results files and merges them
+    :param file_list: list
+    :param name: str
+    :return:
+    """
+
+    all_estimates = []
+    merged_file = open(name, 'w')
+
+    first = True
+    for x in file_list:
+        with open(x) as results:
+
+            res = ResultsFile(results)
+
+            if first:
+                print(''.join(res.head).rstrip(), file=merged_file)
+                first = False
+
+            estimates = res.estimates(as_string=True)
+            lnls = [z['lnL'] for z in res.estimates()]
+
+            est_by_lnl = zip(lnls, estimates)
+
+            all_estimates += est_by_lnl
+
+    sorted_data = sorted(all_estimates, reverse=True)
+
+    for mle in sorted_data:
+        print(mle[1], file=merged_file)
+
+    merged_file.close()
