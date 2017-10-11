@@ -534,12 +534,23 @@ class ResultsFile(object):
         """
 
         contents = anavar_results_file.readlines()
-        self.head = contents[0:5]
+        self.head = contents[0:7]
         self.control_location = self.head[0].split()[2]
         self.param = tuple(self.head[2].split()[4:])
-        self.columns = tuple(self.head[4].split())
+        self.columns = tuple(self.head[6].split())
 
-        self.data = contents[5:]
+        self.data = contents[7:]
+
+    def seed(self):
+
+        """
+        returns the seed anavar was run with
+        :return: int
+        """
+
+        seed = int(self.head[4].rstrip().replace('seed = ', ''))
+
+        return seed
 
     def free_parameters(self):
 
