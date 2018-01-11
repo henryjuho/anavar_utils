@@ -641,9 +641,10 @@ class ResultsFile(object):
 
         top_lnls = [abs(x['lnL']) for x in self.estimates()][0:2]
 
-        dif = (top_lnls[0] - top_lnls[1]) / (0.5 * (top_lnls[0] + top_lnls[1]))
+        # dif = (top_lnls[0] - top_lnls[1]) / (0.5 * (top_lnls[0] + top_lnls[1]))
+        dif = top_lnls[0] - top_lnls[1]
 
-        if abs(dif) < 1e-5:
+        if abs(dif) < 0.1:
             return True
 
         else:
