@@ -727,14 +727,17 @@ class ResultsFile(object):
     def data_type(self):
 
         """
-        assigns data as either indel or snp
+        assigns data as either indel, snp or snp_indel
         :return: str
         """
 
         param_str = ','.join(self.free_parameters())
 
         if 'ins' in param_str and 'del' in param_str:
-            return 'indel'
+            if 'snp' in param_str:
+                return 'snp_indel'
+            else:
+                return 'indel'
         else:
             return 'snp'
 
