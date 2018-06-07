@@ -3,6 +3,7 @@
 from __future__ import print_function
 import re
 import os
+from anavar_alpha import alpha
 
 
 class Snp1ControlFile(object):
@@ -780,6 +781,77 @@ class ResultsFile(object):
         """
 
         return len(self.data)
+
+    def get_alpha(self, dn, ds, var_type):
+
+        """
+        calculates alpha as described in equation 19 Barton and Zeng 2018
+        :param dn: float
+        :param ds: float
+        :param var_type: str
+        :return: str
+        """
+
+        if var_type not in ['snp', 'indel', 'ins', 'del']:
+            raise ValueError('Unrecognised variant type')
+
+        if self.data_type() != 'indel':
+            raise NotImplementedError('Only implemented for INDELs')
+
+        mle = self.ml_estimate()
+
+        theta_keys = [x for x in mle.keys() if 'theta' in x and 'sel' in x]
+
+        if self.dfe() == 'continuous':
+
+            gamma_keys = [x for x in mle.keys() if 'scale' in x and 'sel' in x] + \
+                         [x for x in mle.keys() if 'shape' in x and 'sel' in x]
+
+        else:
+
+            gamma_keys = [x for x in mle.keys() if 'gamma' in x and 'sel' in x]
+
+        # separate by class
+
+        c = self.num_class()
+
+        if var_type == 'indel':
+            variants_to_process = ['ins', 'del']
+        elif var_type == 'ins':
+            variants_to_process = ['ins']
+        else:
+            variants_to_process = ['del']
+
+        ts = []
+        gs = []
+
+        for var in variants_to_process:
+
+            for i in range(1, c+1):
+
+                if self.dfe() == 'continuous':
+
+                    ti_key = [x for x in theta_keys if var in x]
+
+                    dfei_keys = [x for x in gamma_keys if var in x]
+
+                    gi = -(mle[dfei_keys[0]] * mle[dfei_keys[1]])
+
+                else:
+
+                    ti_key = [x for x in theta_keys if var in x and str(i) in x]
+
+                    gi_key = [x for x in gamma_keys if var in x and str(i) in x]
+
+                    gi = mle[gi_key[0]]
+
+                ti = mle[ti_key[0]]
+
+                ts.append(ti)
+                gs.append(gi)
+
+        var_alpha = alpha(ts, gs, dn, ds)
+        return var_alpha
 
 
 class MultiResultsFile(ResultsFile):
