@@ -57,7 +57,8 @@ class Snp1ControlFile(object):
         :return: sets algorithm string
         """
 
-        algs = {'NLOPT_LD_SLSQP', 'NLOPT_LD_LBFGS', 'NLOPT_LD_VAR1', 'NLOPT_LD_VAR2', 'NLOPT_LN_NELDERMEAD'}
+        algs = {'NLOPT_LD_SLSQP', 'NLOPT_LD_LBFGS', 'NLOPT_LD_VAR1', 'NLOPT_LD_VAR2',
+                'NLOPT_LN_NELDERMEAD', 'NLOPT_LD_TNEWTON_PRECOND_RESTART'}
 
         if alg not in algs:
             raise ValueError('Unsupported algorithm')
