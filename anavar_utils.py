@@ -78,6 +78,7 @@ class Snp1ControlFile(object):
                            'epsabs: {}\n'
                            'epsrel: {}\n'
                            'rftol: {}\n'
+                           'init: random\n'
                            '\n').format(size, key, epsabs, epsrel, rftol)
         else:
             alg_string += 'optional: false\n\n'
