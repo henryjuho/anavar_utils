@@ -38,7 +38,7 @@ class Snp1ControlFile(object):
             raise KeyError('Missing the following SFS in input: {}'.format(','.join(sfs_not_given)))
             
     def set_alg_opts(self, alg='NLOPT_LD_LBFGS', maxeval=100000, maxtime=600, search=500, nnoimp=1, maximp=3,
-                     optional=False, size=10000, key=3, epsabs=1e-50, epsrel=1e-10, rftol=1e-10):
+                     optional=False, size=10000, key=3, epsabs=1e-50, epsrel=1e-10, rftol=1e-10, init=()):
 
         """
         sets algorithm options in control file
@@ -54,6 +54,7 @@ class Snp1ControlFile(object):
         :param epsabs: float
         :param epsrel: float
         :param rftol: float
+        :param init: tuple
         :return: sets algorithm string
         """
 
@@ -72,14 +73,21 @@ class Snp1ControlFile(object):
                       'maximp: {}\n').format(alg, maxeval, maxtime, search, nnoimp, maximp)
 
         if optional:
+
+            # set init string - new in 1.4
+            if len(init) == 0:
+                init = 'random'
+            else:
+                init = 'given[{}]'.format('\t'.join([str(x) for x in init]))
+
             alg_string += ('optional: true\n'
                            'size: {}\n'
                            'key: {}\n'
                            'epsabs: {}\n'
                            'epsrel: {}\n'
                            'rftol: {}\n'
-                           'init: random\n'
-                           '\n').format(size, key, epsabs, epsrel, rftol)
+                           'init: {}\n'
+                           '\n').format(size, key, epsabs, epsrel, rftol, init)
         else:
             alg_string += 'optional: false\n\n'
 
