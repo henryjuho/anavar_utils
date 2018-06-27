@@ -156,6 +156,8 @@ Sets model constraints in control file
 
 Sets model and dfe commands in control file
 
+<b>Parameters:<b>
+
 * sfs_m - <i>(dict)<i> - required: site frequency data in the form of {key: (sfs_list, number_call_sites)} see table at beginning of API section for the relevant dictionary structure for each model
 
 * n - <i>(int)<i> - required: sample size
@@ -182,6 +184,8 @@ Sets model and dfe commands in control file
 ```set_dfe_optional_opts(self, optional=False, fraction=0.005, degree=50, delta=1e-05)```
 
 Sets optional commands for the DFE
+
+<b>Parameters:<b>
 
 * optional - <i>(bool)<i> - default=False: if True optional commands will be added to control file
 
@@ -394,7 +398,11 @@ Gets the maximum likelihood estimate from the results file (assumes a sorted res
 
 ### ```class MultiResultsFile```
 
-```MultiResultsFile(ResultsFile)```
+```MultiResultsFile(self, file_list)```
 
 Merges anavar results files by creating ResultsFile instances for each file and writing a temporary results file of merged results
 before calling a ResultsFile instance on the new merged file, which is then deleted.
+
+<b>Parameters:<b>
+
+* file_list - <i>(list)<i> - required: list of anavar results file names to merge
