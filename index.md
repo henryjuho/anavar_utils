@@ -133,13 +133,13 @@ Sets algorithm options in control file
 
 * optional - <i>(bool)<i> - default=False: if True, then optional commands will be included (optional commands are set separately, but will not be included until optional is set to True) 
   
-* size - <i>(int)<i> - default=10000: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html node/QAG-adaptive- integration.html>
+* size - <i>(int)<i> - default=10000: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html_node/QAG-adaptive-integration.html>
 
-* key - <i>(int)<i> - default=3: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html node/QAG-adaptive- integration.html>
+* key - <i>(int)<i> - default=3: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html node/QAG-adaptive-integration.html>
 
-* epsabs - <i>(float)<i> - default (anavar_utils)=1e-50 - default (anavar1.4)=1e-5: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html node/QAG-adaptive- integration.html>
+* epsabs - <i>(float)<i> - default (anavar_utils)=1e-50 - default (anavar1.4)=1e-5: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html node/QAG-adaptive-integration.html>
 
-* epsrel - <i>(float)<i> - default (anavar_utils)=1e-10 - default (anavar1.4)=1e-8: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html node/QAG-adaptive- integration.html>
+* epsrel - <i>(float)<i> - default (anavar_utils)=1e-10 - default (anavar1.4)=1e-8: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html node/QAG-adaptive-integration.html>
 
 * rftol - <i>(float)<i> - default (anavar_utils)=1e-10 - default (anavar1.4)=1e-8: when consecutive search steps differ by less than the given value then the algorithm is considered to have converged
 
@@ -147,38 +147,53 @@ Sets algorithm options in control file
 
 ```set_constraint(self, constraint)```
 
+Sets model constraints in control file
+
+<b>Parameters:<b>
+
+* constraint - <i>(str)<i> - default='none': sets model constraint, chose form: 'none', 'no_pol_error', 'equal_pol_error', 'equal_mutation_rate'
+
+```set_data(self, sfs_m, n, snp_fold=False, dfe='discrete', c=1, theta_r=(1e-06, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5), shape_r=(0.001, 200), scale_r=(0.1, 1000.0), r_r=(0.05, 5.0))```
+
+Sets model and dfe commands in control file
+
+* sfs_m - <i>(dict)<i> - required: site frequency data in the form of {key: (sfs_list, number_call_sites)} see table at beginning of API section for the relevant dictionary structure for each model
+
+* n - <i>(int)<i> - required: sample size
+
+* snp_fold - <i>(bool)<i> - default=False: if specified sets folded to True, i.e. informs the model that a folded (unpolarised) SFS is given
+
+* dfe - <i>(str)<i> - default='discrete': sets the type of DFE to use, choose from 'discrete' or 'continuous'
+
+* c - <i>(int)<i> - default=1: if dfe='discrete' then c determines the number of classes of sites to estimate parameters for
+
+* theta_r - <i>(tuple)<i> - default=(1e-06, 0.1): specifies the lower and upper theta limits in the form (lower, upper)
+
+* gamma_r - <i>(tuple)<i> - default=(-250, 10): specifies the lower and upper gamma limits in the form (lower, upper)
+
+* error_r - <i>(tuple)<i> - default=(0.0, 0.5): specifies the lower and upper polarisation error limits in the form (lower, upper)
+
+* shape_r - <i>(tuple)<i> - default=(0.001, 200): specifies the lower and upper polarisation shape parameter limits in the form (lower, upper)
+
+* scale_r - <i>(tuple)<i> - default=(0.1, 1000.0): specifies the lower and upper polarisation scale parameter limits in the form (lower, upper)
+
+* r_r - <i>(tuple)<i> - default=(0.05, 5.0): specifies the lower and upper polarisation r parameter limits in the form (lower, upper)
+
+
+```set_dfe_optional_opts(self, optional=False, fraction=0.005, degree=50, delta=1e-05)```
+
+Sets optional commands for the DFE
+
+* optional - <i>(bool)<i> - default=False: if True optional commands will be added to control file
+
+* fraction - <i>(float)<i> - default=0.005: for controlling the step size, h, used in numerical differentiation
+
+* degree - <i>(int)<i> - default=50: the integration over the Gamma distribution is approximated by an n-degree Gaussian quadrature
+
+* delta - <i>(float)<i> - default=1e-5: for controlling the step size, h, used in numerical differentiation
+
+
 <!---
-     |      sets constraint
-     |      :param constraint: str
-     |      :return: sets str
-     |  
-     |  set_data(self, sfs_m, n, snp_fold=False, dfe='discrete', c=1, theta_r=(1e-06, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5), shape_r=(0.001, 200), scale_r=(0.1, 1000.0), r_r=(0.05, 5.0))
-     |      sets model and dfe commands in control file
-     |      :param sfs_m: dict{str: tuple(list(float), int), ..}
-     |      :param n: int
-     |      :param snp_fold: bool
-     |      :param dfe: str
-     |      :param c: int
-     |      :param theta_r: tuple(float, float)
-     |      :param gamma_r: tuple(float, float)
-     |      :param error_r: tuple(float, float)
-     |      :param shape_r: tuple(float, float)
-     |      :param scale_r: tuple(float, float)
-     |      :param r_r: tuple(float, float)
-     |      :return: NA
-     |  
-     |  set_dfe_optional_opts(self, optional=False, fraction=0.005, degree=50, delta=1e-05)
-     |  
-     |  ----------------------------------------------------------------------
-     |  Data descriptors defined here:
-     |  
-     |  __dict__
-     |      dictionary for instance variables (if defined)
-     |  
-     |  __weakref__
-     |      list of weak references to the object (if defined)
-
-
 ##### ```class GbgcControlFile```
      |  Method resolution order:
      |      GbgcControlFile
