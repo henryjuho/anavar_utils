@@ -1,13 +1,14 @@
-# anavar_utils - a python package for creating control files and analysing results from anavar
+# anavar_utils 
 
 ## Introduction
 
 anavar_utils is a python package designed to facilitate the easy creation of 
-control files for anavar ([Barton and Zeng, 2018]()) as well as providing classes 
-for the easy interpretation of anavar's results files.
+control files for anavar ([Barton and Zeng, 2018](https://academic.oup.com/mbe/article/35/6/1536/4960016)) 
+as well as providing classes for the easy interpretation of anavar's results files.
 
-Anavar is available [here](), the manual describes in detail the models available 
-and the paramters in the control files in more extensive detail than in these docs.
+Anavar is available [here](http://zeng-lab.group.shef.ac.uk/wordpress/?page_id=28), 
+the manual describes in much more detail the models available and the parameters in 
+the control files than in these docs.
 
 To use the package to create a simple control file:
 
