@@ -68,7 +68,7 @@ constraint: none
 
 ### Control Files
 
-#### Site frequency data format
+### Site frequency data format
 
 In its simplest form a control file can be created for a given model 
 with only the site frequency spectrum, the number of callable sites 
@@ -98,13 +98,12 @@ Would be expressed as:
 sfs = [100, 50, 33, 25, 20, 17, 14, 12, 11, 10, 9, 8, 8, 7, 7, 6, 6, 6, 5]
 ```
 
-#### Classes
 
-##### ```class Snp1ControlFile```
+### ```class Snp1ControlFile```
 
-Snp1ControlFile()
+```Snp1ControlFile()```
 
-Class to be used for creating a control file for the SNP_1 model. Also the parent class 
+Initiates instance of class to be used for creating a control file for the SNP_1 model. Also the parent class 
 for all other control file classes.
 
 
@@ -135,11 +134,11 @@ Sets algorithm options in control file
   
 * size - <i>(int)<i> - default=10000: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html_node/QAG-adaptive-integration.html>
 
-* key - <i>(int)<i> - default=3: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html node/QAG-adaptive-integration.html>
+* key - <i>(int)<i> - default=3: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html_node/QAG-adaptive-integration.html>
 
-* epsabs - <i>(float)<i> - default (anavar_utils)=1e-50 - default (anavar1.4)=1e-5: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html node/QAG-adaptive-integration.html>
+* epsabs - <i>(float)<i> - default (anavar_utils)=1e-50 - default (anavar1.4)=1e-5: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html_node/QAG-adaptive-integration.html>
 
-* epsrel - <i>(float)<i> - default (anavar_utils)=1e-10 - default (anavar1.4)=1e-8: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html node/QAG-adaptive-integration.html>
+* epsrel - <i>(float)<i> - default (anavar_utils)=1e-10 - default (anavar1.4)=1e-8: controls QAG adaptive integration algorithm in GSL see: <https://www.gnu.org/software/gsl/manual/html_node/QAG-adaptive-integration.html>
 
 * rftol - <i>(float)<i> - default (anavar_utils)=1e-10 - default (anavar1.4)=1e-8: when consecutive search steps differ by less than the given value then the algorithm is considered to have converged
 
@@ -193,439 +192,209 @@ Sets optional commands for the DFE
 * delta - <i>(float)<i> - default=1e-5: for controlling the step size, h, used in numerical differentiation
 
 
-<!---
-##### ```class GbgcControlFile```
-     |  Method resolution order:
-     |      GbgcControlFile
-     |      Snp1ControlFile
-     |      __builtin__.object
-     |  
-     |  Methods defined here:
-     |  
-     |  __init__(self)
-     |  
-     |  set_data(self, sfs_m, n, snp_fold=False, dfe='discrete', c=1, theta_r=(1e-06, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5), shape_r=(0.001, 200), scale_r=(0.1, 1000.0), r_r=(0.05, 5.0))
-     |      sets model and dfe commands in control file
-     |      :param sfs_m: dict{str: tuple(list(float), int), ..}
-     |      :param n: int
-     |      :param snp_fold: bool
-     |      :param dfe: str
-     |      :param c: int
-     |      :param theta_r: tuple(float, float)
-     |      :param gamma_r: tuple(float, float)
-     |      :param error_r: tuple(float, float)
-     |      :param shape_r: tuple(float, float)
-     |      :param scale_r: tuple(float, float)
-     |      :param r_r: tuple(float, float)
-     |      :return: NA
-     |  
-     |  ----------------------------------------------------------------------
-     |  Methods inherited from Snp1ControlFile:
-     |  
-     |  construct(self)
-     |  
-     |  set_alg_opts(self, alg='NLOPT_LD_LBFGS', maxeval=100000, maxtime=600, search=500, nnoimp=1, maximp=3, optional=False, size=10000, key=3, epsabs=1e-50, epsrel=1e-10, rftol=1e-10, init=())
-     |      sets algorithm options in control file
-     |      :param alg: str
-     |      :param maxeval: int
-     |      :param maxtime: int
-     |      :param search: int
-     |      :param nnoimp: int
-     |      :param maximp: int
-     |      :param optional: bool
-     |      :param size: int
-     |      :param key: int
-     |      :param epsabs: float
-     |      :param epsrel: float
-     |      :param rftol: float
-     |      :param init: tuple
-     |      :return: sets algorithm string
-     |  
-     |  set_constraint(self, constraint)
-     |      sets constraint
-     |      :param constraint: str
-     |      :return: sets str
-     |  
-     |  set_dfe_optional_opts(self, optional=False, fraction=0.005, degree=50, delta=1e-05)
-     |  
-     |  ----------------------------------------------------------------------
-     |  Data descriptors inherited from Snp1ControlFile:
-     |  
-     |  __dict__
-     |      dictionary for instance variables (if defined)
-     |  
-     |  __weakref__
-     |      list of weak references to the object (if defined)
-    
-    class Indel1ControlFile(Snp1ControlFile)
-     |  Method resolution order:
-     |      Indel1ControlFile
-     |      Snp1ControlFile
-     |      __builtin__.object
-     |  
-     |  Methods defined here:
-     |  
-     |  __init__(self)
-     |  
-     |  set_data(self, sfs_m, n, snp_fold=False, dfe='discrete', c=1, theta_r=(1e-06, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5), shape_r=(0.001, 200), scale_r=(0.1, 1000.0), r_r=(0.05, 5.0))
-     |      sets model and dfe commands in control file
-     |      :param sfs_m: dict{str: tuple(list(float), int), ..}
-     |      :param n: int
-     |      :param snp_fold: bool
-     |      :param dfe: str
-     |      :param c: int
-     |      :param theta_r: tuple(float, float)
-     |      :param gamma_r: tuple(float, float)
-     |      :param error_r: tuple(float, float)
-     |      :param shape_r: tuple(float, float)
-     |      :param scale_r: tuple(float, float)
-     |      :param r_r: tuple(float, float)
-     |      :return: NA
-     |  
-     |  ----------------------------------------------------------------------
-     |  Methods inherited from Snp1ControlFile:
-     |  
-     |  construct(self)
-     |  
-     |  set_alg_opts(self, alg='NLOPT_LD_LBFGS', maxeval=100000, maxtime=600, search=500, nnoimp=1, maximp=3, optional=False, size=10000, key=3, epsabs=1e-50, epsrel=1e-10, rftol=1e-10, init=())
-     |      sets algorithm options in control file
-     |      :param alg: str
-     |      :param maxeval: int
-     |      :param maxtime: int
-     |      :param search: int
-     |      :param nnoimp: int
-     |      :param maximp: int
-     |      :param optional: bool
-     |      :param size: int
-     |      :param key: int
-     |      :param epsabs: float
-     |      :param epsrel: float
-     |      :param rftol: float
-     |      :param init: tuple
-     |      :return: sets algorithm string
-     |  
-     |  set_constraint(self, constraint)
-     |      sets constraint
-     |      :param constraint: str
-     |      :return: sets str
-     |  
-     |  set_dfe_optional_opts(self, optional=False, fraction=0.005, degree=50, delta=1e-05)
-     |  
-     |  ----------------------------------------------------------------------
-     |  Data descriptors inherited from Snp1ControlFile:
-     |  
-     |  __dict__
-     |      dictionary for instance variables (if defined)
-     |  
-     |  __weakref__
-     |      list of weak references to the object (if defined)
-    
-    class IndelNeuSelControlFile(Snp1ControlFile)
-     |  Method resolution order:
-     |      IndelNeuSelControlFile
-     |      Snp1ControlFile
-     |      __builtin__.object
-     |  
-     |  Methods defined here:
-     |  
-     |  __init__(self)
-     |  
-     |  set_data(self, sfs_m, n, snp_fold=False, dfe='discrete', c=1, theta_r=(1e-06, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5), shape_r=(0.001, 200), scale_r=(0.1, 1000.0), r_r=(0.05, 5.0))
-     |      sets model and dfe commands in control file
-     |      :param sfs_m: dict{str: tuple(list(float), int), ..}
-     |      :param n: int
-     |      :param snp_fold: bool
-     |      :param dfe: str
-     |      :param c: int
-     |      :param theta_r: tuple(float, float)
-     |      :param gamma_r: tuple(float, float)
-     |      :param error_r: tuple(float, float)
-     |      :param shape_r: tuple(float, float)
-     |      :param scale_r: tuple(float, float)
-     |      :param r_r: tuple(float, float)
-     |      :return: NA
-     |  
-     |  ----------------------------------------------------------------------
-     |  Methods inherited from Snp1ControlFile:
-     |  
-     |  construct(self)
-     |  
-     |  set_alg_opts(self, alg='NLOPT_LD_LBFGS', maxeval=100000, maxtime=600, search=500, nnoimp=1, maximp=3, optional=False, size=10000, key=3, epsabs=1e-50, epsrel=1e-10, rftol=1e-10, init=())
-     |      sets algorithm options in control file
-     |      :param alg: str
-     |      :param maxeval: int
-     |      :param maxtime: int
-     |      :param search: int
-     |      :param nnoimp: int
-     |      :param maximp: int
-     |      :param optional: bool
-     |      :param size: int
-     |      :param key: int
-     |      :param epsabs: float
-     |      :param epsrel: float
-     |      :param rftol: float
-     |      :param init: tuple
-     |      :return: sets algorithm string
-     |  
-     |  set_constraint(self, constraint)
-     |      sets constraint
-     |      :param constraint: str
-     |      :return: sets str
-     |  
-     |  set_dfe_optional_opts(self, optional=False, fraction=0.005, degree=50, delta=1e-05)
-     |  
-     |  ----------------------------------------------------------------------
-     |  Data descriptors inherited from Snp1ControlFile:
-     |  
-     |  __dict__
-     |      dictionary for instance variables (if defined)
-     |  
-     |  __weakref__
-     |      list of weak references to the object (if defined)
-    
-    class MultiResultsFile(ResultsFile)
-     |  Method resolution order:
-     |      MultiResultsFile
-     |      ResultsFile
-     |      __builtin__.object
-     |  
-     |  Methods defined here:
-     |  
-     |  __init__(self, file_list)
-     |      takes a list of anavar results files and merges them into one,
-     |      then calls ResultsFile instance on merged file before deleting
-     |      merged file
-     |      :param file_list: list
-     |  
-     |  ----------------------------------------------------------------------
-     |  Methods inherited from ResultsFile:
-     |  
-     |  bounds_hit(self, theta_r=(1e-06, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5), shape_r=(0.001, 200), scale_r=(0.1, 1000.0), r_r=(0.05, 5.0))
-     |      lists parameters too close to estimate boundaries
-     |      :param theta_r: tuple
-     |      :param gamma_r: tuple
-     |      :param error_r: tuple
-     |      :param shape_r: tuple
-     |      :param scale_r: tuple
-     |      :param r_r: tuple
-     |      :return: list
-     |  
-     |  control_file(self)
-     |      returns control file path
-     |      :return: str
-     |  
-     |  converged(self)
-     |      assesses convergence for results file
-     |      :return: bool
-     |  
-     |  data_type(self)
-     |      assigns data as either indel, snp or snp_indel
-     |      :return: str
-     |  
-     |  dfe(self)
-     |      returns type of distribution
-     |      :return: str
-     |  
-     |  estimates(self, as_string=False)
-     |      returns generator of all estimates in dictionary form
-     |      :param as_string: bool
-     |      :return: generator
-     |  
-     |  free_parameters(self)
-     |      returns all free parameters in results file
-     |      :return: tuple
-     |  
-     |  get_alpha(self, dn, ds, var_type)
-     |      calculates alpha as described in equation 19 Barton and Zeng 2018
-     |      :param dn: float
-     |      :param ds: float
-     |      :param var_type: str
-     |      :return: str
-     |  
-     |  header(self)
-     |      returns the column headers line from the file
-     |      :return: tuple
-     |  
-     |  ml_estimate(self, as_string=False)
-     |      returns the maximum likelihood estimate
-     |      :param as_string: bool
-     |      :return: dict
-     |  
-     |  num_class(self)
-     |      returns number of classes in results file
-     |      :return: int
-     |  
-     |  num_runs(self)
-     |      gives the number of runs listed in the results file
-     |      :return: int
-     |  
-     |  seed(self)
-     |      returns the seed anavar was run with
-     |      :return: int
-     |  
-     |  ----------------------------------------------------------------------
-     |  Data descriptors inherited from ResultsFile:
-     |  
-     |  __dict__
-     |      dictionary for instance variables (if defined)
-     |  
-     |  __weakref__
-     |      list of weak references to the object (if defined)
-    
-    class ResultsFile(__builtin__.object)
-     |  Methods defined here:
-     |  
-     |  __init__(self, anavar_results_file)
-     |      Creates an anavar results file object
-     |      :param anavar_results_file: file
-     |  
-     |  bounds_hit(self, theta_r=(1e-06, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5), shape_r=(0.001, 200), scale_r=(0.1, 1000.0), r_r=(0.05, 5.0))
-     |      lists parameters too close to estimate boundaries
-     |      :param theta_r: tuple
-     |      :param gamma_r: tuple
-     |      :param error_r: tuple
-     |      :param shape_r: tuple
-     |      :param scale_r: tuple
-     |      :param r_r: tuple
-     |      :return: list
-     |  
-     |  control_file(self)
-     |      returns control file path
-     |      :return: str
-     |  
-     |  converged(self)
-     |      assesses convergence for results file
-     |      :return: bool
-     |  
-     |  data_type(self)
-     |      assigns data as either indel, snp or snp_indel
-     |      :return: str
-     |  
-     |  dfe(self)
-     |      returns type of distribution
-     |      :return: str
-     |  
-     |  estimates(self, as_string=False)
-     |      returns generator of all estimates in dictionary form
-     |      :param as_string: bool
-     |      :return: generator
-     |  
-     |  free_parameters(self)
-     |      returns all free parameters in results file
-     |      :return: tuple
-     |  
-     |  get_alpha(self, dn, ds, var_type)
-     |      calculates alpha as described in equation 19 Barton and Zeng 2018
-     |      :param dn: float
-     |      :param ds: float
-     |      :param var_type: str
-     |      :return: str
-     |  
-     |  header(self)
-     |      returns the column headers line from the file
-     |      :return: tuple
-     |  
-     |  ml_estimate(self, as_string=False)
-     |      returns the maximum likelihood estimate
-     |      :param as_string: bool
-     |      :return: dict
-     |  
-     |  num_class(self)
-     |      returns number of classes in results file
-     |      :return: int
-     |  
-     |  num_runs(self)
-     |      gives the number of runs listed in the results file
-     |      :return: int
-     |  
-     |  seed(self)
-     |      returns the seed anavar was run with
-     |      :return: int
-     |  
-     |  ----------------------------------------------------------------------
-     |  Data descriptors defined here:
-     |  
-     |  __dict__
-     |      dictionary for instance variables (if defined)
-     |  
-     |  __weakref__
-     |      list of weak references to the object (if defined)
-    
-    class SNPNeuSelControlFile(Snp1ControlFile)
-     |  Method resolution order:
-     |      SNPNeuSelControlFile
-     |      Snp1ControlFile
-     |      __builtin__.object
-     |  
-     |  Methods defined here:
-     |  
-     |  __init__(self)
-     |  
-     |  set_data(self, sfs_m, n, snp_fold=False, dfe='discrete', c=1, theta_r=(1e-06, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5), shape_r=(0.001, 200), scale_r=(0.1, 1000.0), r_r=(0.05, 5.0))
-     |      sets model and dfe commands in control file
-     |      :param sfs_m: dict{str: tuple(list(float), int), ..}
-     |      :param n: int
-     |      :param snp_fold: bool
-     |      :param dfe: str
-     |      :param c: int
-     |      :param theta_r: tuple(float, float)
-     |      :param gamma_r: tuple(float, float)
-     |      :param error_r: tuple(float, float)
-     |      :param shape_r: tuple(float, float)
-     |      :param scale_r: tuple(float, float)
-     |      :param r_r: tuple(float, float)
-     |      :return: NA
-     |  
-     |  ----------------------------------------------------------------------
-     |  Methods inherited from Snp1ControlFile:
-     |  
-     |  construct(self)
-     |  
-     |  set_alg_opts(self, alg='NLOPT_LD_LBFGS', maxeval=100000, maxtime=600, search=500, nnoimp=1, maximp=3, optional=False, size=10000, key=3, epsabs=1e-50, epsrel=1e-10, rftol=1e-10, init=())
-     |      sets algorithm options in control file
-     |      :param alg: str
-     |      :param maxeval: int
-     |      :param maxtime: int
-     |      :param search: int
-     |      :param nnoimp: int
-     |      :param maximp: int
-     |      :param optional: bool
-     |      :param size: int
-     |      :param key: int
-     |      :param epsabs: float
-     |      :param epsrel: float
-     |      :param rftol: float
-     |      :param init: tuple
-     |      :return: sets algorithm string
-     |  
-     |  set_constraint(self, constraint)
-     |      sets constraint
-     |      :param constraint: str
-     |      :return: sets str
-     |  
-     |  set_dfe_optional_opts(self, optional=False, fraction=0.005, degree=50, delta=1e-05)
-     |  
-     |  ----------------------------------------------------------------------
-     |  Data descriptors inherited from Snp1ControlFile:
-     |  
-     |  __dict__
-     |      dictionary for instance variables (if defined)
-     |  
-     |  __weakref__
-     |      list of weak references to the object (if defined)
-    
-    
-FUNCTIONS
-    merge_results(file_list, name)
-        takes list of results files and merges them
-        :param file_list: list
-        :param name: str
-        :return:
 
-DATA
-    print_function = _Feature((2, 6, 0, 'alpha', 2), (3, 0, 0, 'alpha', 0)...
+### ```class GbgcControlFile```
 
--->
+```GbgcControlFile(Snp1ControlFile)```
+
+Initiates instance of class to be used for creating a control file for the gBGC_EXTENDED_M1* model. 
+
+Inherits methods from Snp1ControlFile.
+
+```set_constraint(self, constraint)```
+
+Sets model constraints in control file
+
+<b>Parameters:<b>
+
+* constraint - <i>(str)<i> - default='none': sets model constraint, chose form: 'none', 'M0', 'M1', 'M0*' and 'M1*'
+
+
+### ```class Indel1ControlFile```
+
+```Indel1ControlFile(Snp1ControlFile)```
+
+Initiates instance of class to be used for creating a control file for the INDEL_1 model. 
+
+Inherits methods from Snp1ControlFile.
+
+```set_constraint(self, constraint)```
+
+Sets model constraints in control file
+
+<b>Parameters:<b>
+
+* constraint - <i>(str)<i> - default='none': sets model constraint, chose form: 'none' and 'neutral'
+     
+     
+### ```class IndelNeuSelControlFile```
+
+```IndelNeuSelControlFile(Snp1ControlFile)```
+
+Initiates instance of class to be used for creating a control file for the neutralINDEL_vs_selectedINDEL model. 
+
+Inherits methods from Snp1ControlFile.
+
+```set_constraint(self, constraint)```
+
+Sets model constraints in control file
+
+<b>Parameters:<b>
+
+* constraint - <i>(str)<i> - default='none': sets model constraint, chose form: 'none' and 'equal_mutation_rate'
+
+### ```class SNPNeuSelControlFile```
+
+```SNPNeuSelControlFile(Snp1ControlFile)```
+
+Initiates instance of class to be used for creating a control file for the neutralSNP_vs_selectedSNP model. 
+
+Inherits methods from Snp1ControlFile.
+
+```set_constraint(self, constraint)```
+
+Sets model constraints in control file
+
+<b>Parameters:<b>
+
+* constraint - <i>(str)<i> - default='none': sets model constraint, chose form: 'none' and 'equal_mutation_rate'
 
 
 ### Results Files
+
+### ```class ResultsFile(__builtin__.object)```
+
+```ResultsFile(self, anavar_results_file)```
+
+Creates an anavar results file object from a file object of a valid anavar results file
+
+<b>Parameters:<b>
+
+* anavar_results_file - <i>(file_object)<i> - required: an open anavar results file
+
+```bounds_hit(self, theta_r=(1e-06, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5), shape_r=(0.001, 200), scale_r=(0.1, 1000.0), r_r=(0.05, 5.0))```
+
+Determines if any of the parameter estimates in the results file have hit their upper or lower limits
+
+<b>Parameters:<b>
+
+* theta_r - <i>(tuple)<i> - default=(1e-06, 0.1): specifies the lower and upper theta limits in the form (lower, upper)
+
+* gamma_r - <i>(tuple)<i> - default=(-250, 10): specifies the lower and upper gamma limits in the form (lower, upper)
+
+* error_r - <i>(tuple)<i> - default=(0.0, 0.5): specifies the lower and upper polarisation error limits in the form (lower, upper)
+
+* shape_r - <i>(tuple)<i> - default=(0.001, 200): specifies the lower and upper polarisation shape parameter limits in the form (lower, upper)
+
+* scale_r - <i>(tuple)<i> - default=(0.1, 1000.0): specifies the lower and upper polarisation scale parameter limits in the form (lower, upper)
+
+* r_r - <i>(tuple)<i> - default=(0.05, 5.0): specifies the lower and upper polarisation r parameter limits in the form (lower, upper)
+
+<b>Returns:<b>
+
+* list - parameters that hit limits
+
+
+```control_file(self)```
+
+<b>Returns:<b>
+
+* str - control file path listed in results file
+
+
+```converged(self)```
+
+Determines if algorithm has converged. If ln likelihoods differ by less than 0.1 algorithm is said to have converged
+
+<b>Returns:<b>
+
+* bool - convergence status results file
+
+```data_type(self)```
+
+<b>Returns:<b>
+
+* str - returns either 'indel', 'snp' or 'snp_indel'
+
+```dfe(self)```
+
+<b>Returns:<b>
+
+* str - returns distribution type 'continuous' or 'discrete'
+
+```estimates(self, as_string=False)```
+
+<b>Parameters:<b>
+
+* as_string - <i>bool<i> - default=False: if True will yield each results line as a string, if False yields each line as a dictionary with the parameter names as keys
+
+<b>Yields:<b>
+
+* str or dict - yields each results line of the file
+
+```free_parameters(self)```
+
+<b>Returns:<b>
+
+* tuple - the free parameters in the model, as found at the top of the results file
+
+```get_alpha(self, dn, ds, var_type)```
+
+Calculates alpha (proportion of substitutions fixed by positive selection) using equation 19 in Barton and Zeng (2018)
+
+<b>Parameters:<b>
+
+* dn - <i>(float)<i> - required: non-synonymous divergence
+
+* ds - <i>(float)<i> - required: synonymous divergence
+
+* var_type - <i>(str)<i> - required: variant type to calculate alpha for, choose from 'snp', 'indel', 'ins', and 'del'
+
+<b>Returns:<b>
+
+* float - alpha value
+
+
+```header(self)```
+
+<b>Returns:<b>
+
+* tuple - returns the column headers line from the file
+
+```ml_estimate(self, as_string=False)```
+
+Gets the maximum likelihood estimate from the results file (assumes a sorted results file)
+
+<b>Parameters:<b>
+
+* as_string - <i>bool<i> - default=False: if True will returns line as a string, if False returns line as a dictionary with the parameter names as keys
+
+<b>Returns:<b>
+
+* str or dict - returns maximum likelihood parameter estimates
+
+```num_class(self)```
+
+<b>Returns:<b>
+
+* int - returns number of classes of sites in results (c), if dfe='continuous' returns 1
+
+```num_runs(self)```
+
+<b>Returns:<b>
+
+* int - gives the number of runs listed in the results file
+
+```seed(self)```
+
+<b>Returns:<b>
+
+* int - returns the seed anavar was run with
+
+
+### ```class MultiResultsFile```
+
+```MultiResultsFile(ResultsFile)```
+
+Merges anavar results files by creating ResultsFile instances for each file and writing a temporary results file of merged results
+before calling a ResultsFile instance on the new merged file, which is then deleted.
