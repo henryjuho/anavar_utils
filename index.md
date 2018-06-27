@@ -64,9 +64,9 @@ constraint: none
 
 ```
 
-## API
+# API
 
-### Control Files
+# Control Files
 
 ### Site frequency data format
 
@@ -260,9 +260,9 @@ Sets model constraints in control file
 * constraint - <i>(str)<i> - default='none': sets model constraint, chose form: 'none' and 'equal_mutation_rate'
 
 
-### Results Files
+# Results Files
 
-### ```class ResultsFile(__builtin__.object)```
+### ```class ResultsFile```
 
 ```ResultsFile(self, anavar_results_file)```
 
