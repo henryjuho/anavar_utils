@@ -450,6 +450,99 @@ class IndelNeuSelControlFile(Snp1ControlFile):
         self.dfe_opts = dfe_param
 
 
+class IndelSnpNeuSelControlFile(Snp1ControlFile):
+
+    def __init__(self):
+        Snp1ControlFile.__init__(self)
+
+        self.sfs = ['neutral_SNP', 'selected_INS', 'selected_DEL']
+        self.constraints = ['none']
+
+    def set_data(self, sfs_m, n, snp_fold=False,
+                 dfe='discrete', c=1,
+                 theta_r=(1e-6, 0.1), gamma_r=(-250, 10), error_r=(0.0, 0.5),
+                 shape_r=(1e-3, 200), scale_r=(0.1, 1e3), r_r=(0.05, 5.0)):
+
+        """
+        sets model and dfe commands in control file
+        :param sfs_m: dict{str: tuple(list(float), int), ..}
+        :param n: int
+        :param snp_fold: bool
+        :param dfe: str
+        :param c: int
+        :param theta_r: tuple(float, float)
+        :param gamma_r: tuple(float, float)
+        :param error_r: tuple(float, float)
+        :param shape_r: tuple(float, float)
+        :param scale_r: tuple(float, float)
+        :param r_r: tuple(float, float)
+        :return: NA
+        """
+
+        self._check_sfs_m_in(sfs_m)
+
+        model_ctrls = ('[model_commands]\n'
+                       'model: neutralSNP_vs_selectedINDEL\n'
+                       'n: {n}\n'
+                       'r_range: {r1}, {r2}\n'
+                       'neu_snp_m: {m1}\n'
+                       'neu_snp_sfs: {sfs1}\n'
+                       'neu_snp_theta_range: {t1}, {t2}\n'
+                       'neu_snp_e_range: {e1}, {e2}\n'
+                       'sel_indel_m: {m3}\n'
+                       'sel_ins_sfs: {sfs3}\n'
+                       'sel_del_sfs: {sfs4}\n')
+
+        model_ctrls = model_ctrls.format(n=n,
+                                         r1=r_r[0], r2=r_r[1],
+                                         m1=sfs_m['neutral_SNP'][1],
+                                         sfs1=', '.join([str(x) for x in sfs_m['neutral_SNP'][0]]),
+                                         m3=sfs_m['selected_INS'][1],
+                                         sfs3=', '.join([str(x) for x in sfs_m['selected_INS'][0]]),
+                                         sfs4=', '.join([str(x) for x in sfs_m['selected_DEL'][0]]),
+                                         t1=theta_r[0], t2=theta_r[1],
+                                         e1=error_r[0], e2=error_r[1])
+
+        self.model_opts = model_ctrls
+
+        if dfe == 'discrete':
+            dfe_param = ('dfe: discrete\n'
+                         'c: {c}\n'
+                         'ins_theta_range: {t1}, {t2}\n'
+                         'ins_gamma_range: {g1}, {g2}\n'
+                         'ins_e_range: {e1}, {e2}\n'
+                         'del_theta_range: {t1}, {t2}\n'
+                         'del_gamma_range: {g1}, {g2}\n'
+                         'del_e_range: {e1}, {e2}\n')
+
+            dfe_param = dfe_param.format(c=c,
+                                         t1=theta_r[0], t2=theta_r[1],
+                                         g1=gamma_r[0], g2=gamma_r[1],
+                                         e1=error_r[0], e2=error_r[1])
+
+        else:
+            dfe_param = ('dfe: continuous\n'
+                         'distribution: reflected_gamma\n'
+                         'ins_theta_range: {t1}, {t2}\n'
+                         'ins_shape_range: {sh1}, {sh2}\n'
+                         'ins_scale_range: {sc1}, {sc2}\n'
+                         'ins_e_range: {e1}, {e2}\n'
+                         'del_theta_range: {t1}, {t2}\n'
+                         'del_shape_range: {sh1}, {sh2}\n'
+                         'del_scale_range: {sc1}, {sc2}\n'
+                         'del_e_range: {e1}, {e2}\n')
+
+            dfe_param = dfe_param.format(t1=theta_r[0], t2=theta_r[1],
+                                         sh1=shape_r[0], sh2=shape_r[1],
+                                         sc1=scale_r[0], sc2=scale_r[1],
+                                         e1=error_r[0], e2=error_r[1])
+
+            if self.dfe_optional_opts == '':
+                self.set_dfe_optional_opts()
+
+        self.dfe_opts = dfe_param
+
+
 class SNPNeuSelControlFile(Snp1ControlFile):
 
     def __init__(self):
