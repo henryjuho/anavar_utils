@@ -549,7 +549,7 @@ class SNPNeuSelControlFile(Snp1ControlFile):
         Snp1ControlFile.__init__(self)
 
         self.sfs = ['neutral_SNP', 'selected_SNP']
-        self.constraints = ['none', 'equal_mutation_rate']
+        self.constraints = ['none', 'equal_mutation_rate', 'equal_mutation_rate_AND_no_pol_error']
 
     def set_data(self, sfs_m, n, snp_fold=False,
                  dfe='discrete', c=1,
