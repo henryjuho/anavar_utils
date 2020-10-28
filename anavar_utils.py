@@ -898,8 +898,8 @@ class ResultsFile(object):
         if var_type not in ['snp', 'indel', 'ins', 'del']:
             raise ValueError('Unrecognised variant type')
 
-        if self.data_type() != 'indel':
-            raise NotImplementedError('Only implemented for INDELs')
+        # if self.data_type() != 'indel':
+        #     raise NotImplementedError('Only implemented for INDELs')
 
         mle = self.ml_estimate()
 
@@ -922,8 +922,10 @@ class ResultsFile(object):
             variants_to_process = ['ins', 'del']
         elif var_type == 'ins':
             variants_to_process = ['ins']
-        else:
+        elif var_type == 'del':
             variants_to_process = ['del']
+        else:
+            variants_to_process = ['']
 
         ts = []
         gs = []
